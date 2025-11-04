@@ -1,1 +1,1969 @@
-# itsmeArozo.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Johnson | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --black-1: #000000;
+            --black-2: #0a0a0a;
+            --black-3: #111111;
+            --dark-blue-1: #0d1b2a;
+            --dark-blue-2: #1b263b;
+            --dark-blue-3: #415a77;
+            --accent-blue: #3a86ff;
+            --accent-purple: #8338ec;
+            --light-blue: #4cc9f0;
+            --neon-blue: #00d9ff;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--black-1), var(--dark-blue-1), var(--dark-blue-2));
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pages {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .page {
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.5rem;
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+            overflow: hidden;
+        }
+
+        .page.hidden {
+            transform: translateY(100%);
+        }
+
+        .page.active {
+            transform: translateY(0);
+        }
+
+        .page.prev {
+            transform: translateY(-100%);
+        }
+
+        .page-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            padding: 0.5rem;
+            overflow-y: auto;
+            max-height: calc(100vh - 1rem);
+        }
+
+        /* Advanced Background Elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(40px);
+        }
+
+        .floating-shape-1 {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            right: 5%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .floating-shape-2 {
+            width: 180px;
+            height: 180px;
+            bottom: 10%;
+            left: 5%;
+            animation: float 18s ease-in-out infinite reverse;
+        }
+
+        .floating-shape-3 {
+            width: 120px;
+            height: 120px;
+            top: 50%;
+            left: 10%;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(180deg); }
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .dot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .dot.active {
+            background-color: var(--accent-blue);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--accent-blue);
+            border-color: var(--neon-blue);
+        }
+
+        .dot::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            white-space: nowrap;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dot:hover::after {
+            opacity: 1;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 27, 42, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.7rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--accent-blue);
+        }
+
+        .mobile-nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-blue);
+        }
+
+        .mobile-nav-item i {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        /* Page 1 - About */
+        .page-1 {
+            background: linear-gradient(135deg, var(--black-1), var(--dark-blue-1));
+        }
+
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+            max-width: 100%;
+        }
+
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid transparent;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-content {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .name {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .title {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+        }
+
+        .about-text {
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .skill {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: clamp(0.75rem, 1vw, 0.85rem);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .skill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(58, 134, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .skill:hover {
+            transform: translateY(-3px);
+            border-color: rgba(58, 134, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill:hover::before {
+            left: 100%;
+        }
+
+        /* Characteristics Section */
+        .characteristics-container {
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .characteristics-title {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--accent-blue);
+        }
+
+        .characteristics-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .characteristic-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            flex: 0 1 auto;
+        }
+
+        .characteristic-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .characteristic-icon {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+        }
+
+        .characteristic-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Tools Section */
+        .tools-container {
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .tools-title {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--accent-blue);
+        }
+
+        .tools-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .tool-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 100px;
+            flex: 0 1 auto;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+        }
+
+        .tool-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Page 2 - Experience */
+        .page-2 {
+            background: linear-gradient(135deg, var(--dark-blue-1), var(--dark-blue-2));
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+            border-radius: 2px;
+        }
+
+        .experience-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple));
+            transform: scaleY(0);
+            transition: transform 0.3s;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        .experience-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .experience-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-blue);
+        }
+
+        .experience-title {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .experience-desc {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+        }
+
+        .highlight {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        /* Page 3 - Skills */
+        .page-3 {
+            background: linear-gradient(135deg, var(--dark-blue-2), var(--dark-blue-3));
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .skill-category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            min-height: 240px;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-category-title {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-list {
+            list-style-type: none;
+        }
+
+        .skill-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+        }
+
+        .skill-list li:hover {
+            transform: translateX(5px);
+            color: var(--accent-blue);
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-list li i {
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+        }
+
+        /* Page 4 - Portfolio */
+        .page-4 {
+            background: linear-gradient(135deg, var(--dark-blue-3), #1e4a8a);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 180px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 0.4rem;
+        }
+
+        .gallery-desc {
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        /* Page 5 - Demos (Redesigned) */
+        .page-5 {
+            background: linear-gradient(135deg, #1e4a8a, var(--dark-blue-3));
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            height: 200px; /* Reduced height */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .demo-card.expanded {
+            height: 350px; /* Expanded height when playing */
+        }
+
+        .demo-video {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .demo-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .demo-video.playing video {
+            display: block;
+        }
+
+        .demo-video.playing .play-icon {
+            display: none;
+        }
+
+        .demo-video::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(58, 134, 255, 0.3), rgba(131, 56, 236, 0.3));
+        }
+
+        .play-icon {
+            z-index: 2;
+            position: relative;
+            font-size: 2.5rem;
+            opacity: 0.8;
+            transition: all 0.3s;
+        }
+
+        .demo-card:hover .play-icon {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .demo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .demo-card:hover .demo-overlay {
+            opacity: 1;
+        }
+
+        .demo-card.expanded .demo-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .demo-card-title {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .demo-card-desc {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            text-align: center;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 4;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .demo-card.expanded .video-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-blue);
+            transform: scale(1.1);
+        }
+
+        /* Page 6 - Certificates */
+        .page-6 {
+            background: linear-gradient(135deg, var(--dark-blue-3), var(--black-2));
+        }
+
+        .certificates-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .certificate-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .certificate-item:hover {
+            transform: translateY(-6px);
+            border-color: rgba(58, 134, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .certificate-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(58, 134, 255, 0.2), rgba(131, 56, 236, 0.2));
+        }
+
+        .certificate-image i {
+            z-index: 2;
+            position: relative;
+            font-size: 2.5rem;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .certificate-item:hover .certificate-image i {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .certificate-content {
+            padding: 1rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .certificate-title {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .certificate-issuer {
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+            color: var(--accent-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .certificate-date {
+            font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) and (max-width: 1200px) {
+            .page-content {
+                max-width: 95%;
+                padding: 1rem;
+            }
+            
+            .profile-container {
+                flex-direction: row;
+                text-align: left;
+                gap: 2rem;
+            }
+            
+            .profile-image {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .gallery, .certificates-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .gallery-item {
+                height: 200px;
+            }
+            
+            .experience-container,
+            .skills-grid,
+            .demo-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (min-width: 1201px) {
+            .page-content {
+                max-width: 1200px;
+                padding: 1.5rem;
+            }
+            
+            .profile-container {
+                flex-direction: row;
+                text-align: left;
+                gap: 3rem;
+            }
+            
+            .profile-image {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .gallery, .certificates-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+            
+            .gallery-item {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .nav-dots {
+                display: none;
+            }
+
+            .mobile-nav {
+                display: flex;
+            }
+
+            .page {
+                padding: 0.5rem 0.5rem 4rem;
+                justify-content: flex-start;
+            }
+
+            .page-content {
+                padding: 0.5rem;
+                max-height: calc(100vh - 5rem);
+            }
+
+            .gallery, .certificates-container {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-container, .experience-container, .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item {
+                height: 160px;
+            }
+            
+            .demo-card {
+                height: 180px;
+            }
+            
+            .demo-card.expanded {
+                height: 300px;
+            }
+            
+            .certificate-image {
+                height: 110px;
+            }
+            
+            .characteristics-row,
+            .tools-row {
+                gap: 0.6rem;
+            }
+            
+            .characteristic-item,
+            .tool-item {
+                min-width: 100px;
+                padding: 0.6rem 0.8rem;
+            }
+            
+            .floating-shape-1,
+            .floating-shape-2,
+            .floating-shape-3 {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page {
+                padding: 0.25rem 0.25rem 4rem;
+            }
+            
+            .page-content {
+                padding: 0.25rem;
+            }
+            
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .skills-container {
+                gap: 0.5rem;
+            }
+
+            .skill {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            
+            .experience-card,
+            .skill-category,
+            .demo-card,
+            .certificate-item {
+                padding: 1rem;
+            }
+            
+            .gallery-item {
+                height: 140px;
+            }
+            
+            .demo-card {
+                height: 160px;
+            }
+            
+            .demo-card.expanded {
+                height: 280px;
+            }
+            
+            .certificate-image {
+                height: 100px;
+            }
+            
+            .characteristics-row,
+            .tools-row {
+                gap: 0.5rem;
+            }
+            
+            .characteristic-item,
+            .tool-item {
+                min-width: 90px;
+                padding: 0.5rem 0.7rem;
+            }
+            
+            .characteristic-name,
+            .tool-name {
+                font-size: 0.75rem;
+            }
+            
+            .mobile-nav {
+                padding: 0.5rem 0;
+            }
+            
+            .mobile-nav-item {
+                font-size: 0.65rem;
+            }
+            
+            .mobile-nav-item i {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Ensure content never overflows */
+        .page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .page-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .page-content::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 3px;
+        }
+
+        .page-content::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-purple);
+        }
+
+        /* Prevent text overflow */
+        .name, .title, .about-text,
+        .experience-title, .experience-desc,
+        .skill-category-title, .skill-list li,
+        .gallery-title, .gallery-desc,
+        .demo-card-title, .demo-card-desc,
+        .certificate-title, .certificate-issuer, .certificate-date {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Ensure images maintain aspect ratio */
+        .profile-image img,
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pages">
+            <!-- Page 1 - About -->
+            <section id="page-1" class="page page-1 active">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-1"></div>
+                    <div class="floating-shape floating-shape-2"></div>
+                    <div class="floating-shape floating-shape-3"></div>
+                </div>
+                <div class="page-content">
+                    <div class="profile-container">
+                        <div class="profile-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Profile Image">
+                        </div>
+                        <div class="profile-content">
+                            <h1 class="name">Alex Johnson</h1>
+                            <h2 class="title">Full Stack Developer & IT Specialist</h2>
+                            <p class="about-text">
+                                Versatile IT professional with extensive experience in web development, e-learning coordination, and examination management. 
+                                Skilled in both technical development and administrative coordination with a strong focus on data privacy and security.
+                            </p>
+                            <div class="skills-container">
+                                <div class="skill">Web Development</div>
+                                <div class="skill">E-Learning Coordination</div>
+                                <div class="skill">Data Privacy</div>
+                                <div class="skill">Training Coordination</div>
+                                <div class="skill">IT Troubleshooting</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Characteristics Section -->
+                    <div class="characteristics-container">
+                        <h3 class="characteristics-title">Personal Characteristics</h3>
+                        <div class="characteristics-row">
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="characteristic-name">Methodical</div>
+                            </div>
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <div class="characteristic-name">Self-Motivated</div>
+                            </div>
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+                                <div class="characteristic-name">Can Multitask</div>
+                            </div>
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="characteristic-name">Attention to Detail</div>
+                            </div>
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <div class="characteristic-name">Adaptability</div>
+                            </div>
+                            <div class="characteristic-item">
+                                <div class="characteristic-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="characteristic-name">Eagerness to Learn</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools Section -->
+                    <div class="tools-container">
+                        <h3 class="tools-title">Useful Tools I Know</h3>
+                        <div class="tools-row">
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fab fa-figma"></i>
+                                </div>
+                                <div class="tool-name">Figma</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fab fa-microsoft"></i>
+                                </div>
+                                <div class="tool-name">Microsoft Apps</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="tool-name">VS Code</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="tool-name">GoDaddy</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="tool-name">AI Tools</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div class="tool-name">CapCut</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <div class="tool-name">Canva</div>
+                            </div>
+                            <div class="tool-item">
+                                <div class="tool-icon">
+                                    <i class="fab fa-google"></i>
+                                </div>
+                                <div class="tool-name">Google Workspace</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 2 - Experience -->
+            <section id="page-2" class="page page-2 hidden">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-1"></div>
+                    <div class="floating-shape floating-shape-2"></div>
+                </div>
+                <div class="page-content">
+                    <h2 class="section-title">My Experience</h2>
+                    <div class="experience-container">
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h3 class="experience-title">Exam Officer</h3>
+                            <p class="experience-desc">
+                                Managed examination processes for <span class="highlight">over 3000+ individuals</span>, 
+                                ensuring smooth administration and compliance with regulations.
+                            </p>
+                        </div>
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h3 class="experience-title">E-Learning Coordinator</h3>
+                            <p class="experience-desc">
+                                Handled the entire e-learning platform, providing access to customers and managing 
+                                the digital learning environment.
+                            </p>
+                        </div>
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="experience-title">Data Protection Officer</h3>
+                            <p class="experience-desc">
+                                Certified in Data Privacy Act compliance. Served as designated DPO ensuring 
+                                data protection and regulatory adherence.
+                            </p>
+                        </div>
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <h3 class="experience-title">Training Coordinator</h3>
+                            <p class="experience-desc">
+                                Organized and conducted training sessions across various locations, 
+                                managing schedules and participant enrollment.
+                            </p>
+                        </div>
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h3 class="experience-title">IT Support Specialist</h3>
+                            <p class="experience-desc">
+                                Provided hardware and software troubleshooting, application support, 
+                                data backup, and system maintenance.
+                            </p>
+                        </div>
+                        <div class="experience-card">
+                            <div class="experience-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="experience-title">Data Management</h3>
+                            <p class="experience-desc">
+                                Experienced in data organization, large data entries, and scanning examination 
+                                papers through mobile devices for database encoding.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 3 - Skills -->
+            <section id="page-3" class="page page-3 hidden">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-1"></div>
+                    <div class="floating-shape floating-shape-3"></div>
+                </div>
+                <div class="page-content">
+                    <h2 class="section-title">Technical Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">
+                                <i class="fas fa-code"></i> Programming Languages
+                            </h3>
+                            <ul class="skill-list">
+                                <li><i class="fas fa-check"></i> PHP</li>
+                                <li><i class="fas fa-check"></i> JavaScript</li>
+                                <li><i class="fas fa-check"></i> HTML/CSS</li>
+                                <li><i class="fas fa-check"></i> SQL</li>
+                                <li><i class="fas fa-check"></i> Python (Basic)</li>
+                                <li><i class="fas fa-check"></i> Java (Basic)</li>
+                                <li><i class="fas fa-check"></i> C# (Basic)</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">
+                                <i class="fas fa-tools"></i> Technical Skills
+                            </h3>
+                            <ul class="skill-list">
+                                <li><i class="fas fa-check"></i> Web Development</li>
+                                <li><i class="fas fa-check"></i> Database Management</li>
+                                <li><i class="fas fa-check"></i> Hardware Troubleshooting</li>
+                                <li><i class="fas fa-check"></i> Software Troubleshooting</li>
+                                <li><i class="fas fa-check"></i> Data Backup & Recovery</li>
+                                <li><i class="fas fa-check"></i> System Administration</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h3 class="skill-category-title">
+                                <i class="fas fa-chart-line"></i> Professional Skills
+                            </h3>
+                            <ul class="skill-list">
+                                <li><i class="fas fa-check"></i> E-Learning Platform Management</li>
+                                <li><i class="fas fa-check"></i> Examination Administration</li>
+                                <li><i class="fas fa-check"></i> Training Coordination</li>
+                                <li><i class="fas fa-check"></i> Data Privacy Compliance</li>
+                                <li><i class="fas fa-check"></i> Creative AI Prompting</li>
+                                <li><i class="fas fa-check"></i> Video Editing & Demos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 4 - Portfolio -->
+            <section id="page-4" class="page page-4 hidden">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-2"></div>
+                    <div class="floating-shape floating-shape-3"></div>
+                </div>
+                <div class="page-content">
+                    <h2 class="section-title">My Projects</h2>
+                    <div class="gallery">
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80" alt="Project 1">
+                            <div class="gallery-overlay">
+                                <h3 class="gallery-title">Mini Galaga Game</h3>
+                                <p class="gallery-desc">A fun browser-based game where you shoot falling germs</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1715&q=80" alt="Project 2">
+                            <div class="gallery-overlay">
+                                <h3 class="gallery-title">Website Revamp</h3>
+                                <p class="gallery-desc">Complete redesign of two corporate websites</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Project 3">
+                            <div class="gallery-overlay">
+                                <h3 class="gallery-title">Certificate Verification System</h3>
+                                <p class="gallery-desc">Secure system to verify certificates using certificate numbers</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Project 4">
+                            <div class="gallery-overlay">
+                                <h3 class="gallery-title">Training Scheduler</h3>
+                                <p class="gallery-desc">Internal and external training schedule management system</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 5 - Demos (Redesigned) -->
+            <section id="page-5" class="page page-5 hidden">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-1"></div>
+                    <div class="floating-shape floating-shape-2"></div>
+                </div>
+                <div class="page-content">
+                    <h2 class="section-title">Project Demos</h2>
+                    <p class="about-text" style="text-align: center; margin-bottom: 1.5rem;">
+                        Hover to see descriptions. Click to play videos.
+                    </p>
+                    <div class="demo-container">
+                        <div class="demo-card">
+                            <div class="demo-video">
+                                <video preload="metadata">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="play-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                            </div>
+                            <div class="demo-overlay">
+                                <h3 class="demo-card-title">Mini Galaga Game Demo</h3>
+                                <p class="demo-card-desc">
+                                    Watch how the germ-shooting game works with smooth animations and responsive controls. 
+                                    The game features multiple levels and power-ups.
+                                </p>
+                            </div>
+                            <div class="video-controls">
+                                <button class="control-btn play-pause">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="control-btn mute-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="control-btn close-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="demo-card">
+                            <div class="demo-video">
+                                <video preload="metadata">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-white-flowers-on-a-tree-branch-1174-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="play-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                            </div>
+                            <div class="demo-overlay">
+                                <h3 class="demo-card-title">Certificate Verification System</h3>
+                                <p class="demo-card-desc">
+                                    See how the certificate verification process works from input to validation and result display.
+                                    The system ensures secure and fast verification.
+                                </p>
+                            </div>
+                            <div class="video-controls">
+                                <button class="control-btn play-pause">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="control-btn mute-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="control-btn close-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="demo-card">
+                            <div class="demo-video">
+                                <video preload="metadata">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="play-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                            </div>
+                            <div class="demo-overlay">
+                                <h3 class="demo-card-title">Website Revamp Process</h3>
+                                <p class="demo-card-desc">
+                                    A walkthrough of the before-and-after of the websites I revamped, highlighting the improvements
+                                    in design, functionality, and user experience.
+                                </p>
+                            </div>
+                            <div class="video-controls">
+                                <button class="control-btn play-pause">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="control-btn mute-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="control-btn close-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="demo-card">
+                            <div class="demo-video">
+                                <video preload="metadata">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-dandelion-in-a-sunny-field-1175-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="play-icon">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                            </div>
+                            <div class="demo-overlay">
+                                <h3 class="demo-card-title">E-Learning Platform</h3>
+                                <p class="demo-card-desc">
+                                    Demonstration of the e-learning platform management, user access control, 
+                                    and content delivery features.
+                                </p>
+                            </div>
+                            <div class="video-controls">
+                                <button class="control-btn play-pause">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="control-btn mute-btn">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="control-btn close-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page 6 - Certificates -->
+            <section id="page-6" class="page page-6 hidden">
+                <div class="bg-elements">
+                    <div class="floating-shape floating-shape-1"></div>
+                    <div class="floating-shape floating-shape-3"></div>
+                </div>
+                <div class="page-content">
+                    <h2 class="section-title">My Certificates</h2>
+                    <div class="certificates-container">
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">Data Privacy Act Certification</h3>
+                                <p class="certificate-issuer">National Privacy Commission</p>
+                                <p class="certificate-date">Issued: June 2023</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">Full Stack Web Development</h3>
+                                <p class="certificate-issuer">Code Academy</p>
+                                <p class="certificate-date">Issued: March 2023</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">JavaScript Advanced Concepts</h3>
+                                <p class="certificate-issuer">Udemy</p>
+                                <p class="certificate-date">Issued: January 2023</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">Database Management</h3>
+                                <p class="certificate-issuer">Coursera</p>
+                                <p class="certificate-date">Issued: November 2022</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">IT Security Fundamentals</h3>
+                                <p class="certificate-issuer">Cybersecurity Institute</p>
+                                <p class="certificate-date">Issued: September 2022</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">E-Learning Platform Administration</h3>
+                                <p class="certificate-issuer">Learning Technologies</p>
+                                <p class="certificate-date">Issued: July 2022</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">Project Management</h3>
+                                <p class="certificate-issuer">Project Management Institute</p>
+                                <p class="certificate-date">Issued: May 2022</p>
+                            </div>
+                        </div>
+                        <div class="certificate-item">
+                            <div class="certificate-image">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="certificate-content">
+                                <h3 class="certificate-title">UI/UX Design Principles</h3>
+                                <p class="certificate-issuer">Design Academy</p>
+                                <p class="certificate-date">Issued: March 2022</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="nav-dots">
+            <a href="#page-1" class="dot active" data-title="About"></a>
+            <a href="#page-2" class="dot" data-title="Experience"></a>
+            <a href="#page-3" class="dot" data-title="Skills"></a>
+            <a href="#page-4" class="dot" data-title="Portfolio"></a>
+            <a href="#page-5" class="dot" data-title="Demos"></a>
+            <a href="#page-6" class="dot" data-title="Certificates"></a>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav">
+            <a href="#page-1" class="mobile-nav-item active">
+                <i class="fas fa-user"></i>
+                <span>About</span>
+            </a>
+            <a href="#page-2" class="mobile-nav-item">
+                <i class="fas fa-briefcase"></i>
+                <span>Experience</span>
+            </a>
+            <a href="#page-3" class="mobile-nav-item">
+                <i class="fas fa-cogs"></i>
+                <span>Skills</span>
+            </a>
+            <a href="#page-4" class="mobile-nav-item">
+                <i class="fas fa-laptop-code"></i>
+                <span>Portfolio</span>
+            </a>
+            <a href="#page-5" class="mobile-nav-item">
+                <i class="fas fa-play-circle"></i>
+                <span>Demos</span>
+            </a>
+            <a href="#page-6" class="mobile-nav-item">
+                <i class="fas fa-award"></i>
+                <span>Certificates</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const pages = document.querySelectorAll('.page');
+            const dots = document.querySelectorAll('.dot');
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            let currentPage = 0;
+            const totalPages = pages.length;
+            let isScrolling = false;
+
+            // Initialize pages
+            function initPages() {
+                pages.forEach((page, index) => {
+                    if (index === 0) {
+                        page.classList.add('active');
+                        page.classList.remove('hidden', 'prev');
+                    } else {
+                        page.classList.add('hidden');
+                        page.classList.remove('active', 'prev');
+                    }
+                });
+            }
+
+            initPages();
+
+            // Scroll to page function
+            function scrollToPage(pageIndex) {
+                if (isScrolling || pageIndex < 0 || pageIndex >= totalPages) return;
+                
+                isScrolling = true;
+                
+                // Update dots
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[pageIndex].classList.add('active');
+                
+                // Update mobile nav
+                mobileNavItems.forEach(item => item.classList.remove('active'));
+                mobileNavItems[pageIndex].classList.add('active');
+                
+                // Update pages
+                pages.forEach((page, index) => {
+                    page.classList.remove('active', 'prev', 'hidden');
+                    
+                    if (index === pageIndex) {
+                        page.classList.add('active');
+                    } else if (index < pageIndex) {
+                        page.classList.add('prev');
+                    } else {
+                        page.classList.add('hidden');
+                    }
+                });
+                
+                currentPage = pageIndex;
+                
+                // Reset scrolling flag after transition
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 800);
+            }
+
+            // Mouse wheel event
+            document.addEventListener('wheel', function(e) {
+                if (isScrolling) return;
+                
+                if (e.deltaY > 0) {
+                    // Scroll down
+                    if (currentPage < totalPages - 1) {
+                        scrollToPage(currentPage + 1);
+                    }
+                } else {
+                    // Scroll up
+                    if (currentPage > 0) {
+                        scrollToPage(currentPage - 1);
+                    }
+                }
+            });
+
+            // Dot navigation
+            dots.forEach(dot => {
+                dot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageIndex = Array.from(dots).indexOf(this);
+                    scrollToPage(pageIndex);
+                });
+            });
+
+            // Mobile navigation
+            mobileNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageIndex = Array.from(mobileNavItems).indexOf(this);
+                    scrollToPage(pageIndex);
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (isScrolling) return;
+                
+                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                    if (currentPage < totalPages - 1) {
+                        scrollToPage(currentPage + 1);
+                    }
+                } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                    if (currentPage > 0) {
+                        scrollToPage(currentPage - 1);
+                    }
+                }
+            });
+
+            // Touch events for mobile
+            let touchStartY = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                if (isScrolling) return;
+                
+                const touchEndY = e.changedTouches[0].clientY;
+                const diff = touchStartY - touchEndY;
+                
+                if (Math.abs(diff) > 50) { // Minimum swipe distance
+                    if (diff > 0) {
+                        // Swipe up
+                        if (currentPage < totalPages - 1) {
+                            scrollToPage(currentPage + 1);
+                        }
+                    } else {
+                        // Swipe down
+                        if (currentPage > 0) {
+                            scrollToPage(currentPage - 1);
+                        }
+                    }
+                }
+            });
+
+            // Video Demo Functionality
+            const demoCards = document.querySelectorAll('.demo-card');
+            
+            demoCards.forEach(card => {
+                const video = card.querySelector('video');
+                const playIcon = card.querySelector('.play-icon');
+                const playPauseBtn = card.querySelector('.play-pause');
+                const muteBtn = card.querySelector('.mute-btn');
+                const closeBtn = card.querySelector('.close-btn');
+                
+                // Play video on card click
+                card.addEventListener('click', function(e) {
+                    if (e.target === playPauseBtn || e.target === muteBtn || e.target === closeBtn) {
+                        return; // Don't trigger if clicking controls
+                    }
+                    
+                    if (card.classList.contains('expanded')) {
+                        // Video is already playing, pause it
+                        video.pause();
+                        card.classList.remove('expanded');
+                        playIcon.style.display = 'flex';
+                        video.classList.remove('playing');
+                    } else {
+                        // Start playing video
+                        card.classList.add('expanded');
+                        video.classList.add('playing');
+                        playIcon.style.display = 'none';
+                        video.play();
+                        
+                        // Pause other videos
+                        demoCards.forEach(otherCard => {
+                            if (otherCard !== card && otherCard.classList.contains('expanded')) {
+                                const otherVideo = otherCard.querySelector('video');
+                                otherVideo.pause();
+                                otherCard.classList.remove('expanded');
+                                otherCard.querySelector('.play-icon').style.display = 'flex';
+                                otherVideo.classList.remove('playing');
+                            }
+                        });
+                    }
+                });
+                
+                // Play/Pause button
+                playPauseBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (video.paused) {
+                        video.play();
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    } else {
+                        video.pause();
+                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    }
+                });
+                
+                // Mute button
+                muteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    video.muted = !video.muted;
+                    muteBtn.innerHTML = video.muted ? 
+                        '<i class="fas fa-volume-mute"></i>' : 
+                        '<i class="fas fa-volume-up"></i>';
+                });
+                
+                // Close button
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    video.pause();
+                    card.classList.remove('expanded');
+                    playIcon.style.display = 'flex';
+                    video.classList.remove('playing');
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                });
+                
+                // Reset video when it ends
+                video.addEventListener('ended', function() {
+                    card.classList.remove('expanded');
+                    playIcon.style.display = 'flex';
+                    video.classList.remove('playing');
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
