@@ -652,6 +652,10 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
+            /* Added to ensure no gaps */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .gallery-item:hover {
@@ -664,6 +668,9 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+            /* Ensure no gaps at the bottom */
+            display: block;
+            flex-shrink: 0;
         }
 
         .gallery-item:hover img {
@@ -695,6 +702,7 @@
             color: #ccc;
             line-height: 1.4;
         }
+
 
         /* Project Modal - Optimized for Laptop and Small Screens */
         .project-modal {
@@ -1897,5 +1905,6 @@
     </script>
 </body>
 </html>
+
 
 
