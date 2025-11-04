@@ -652,10 +652,6 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             cursor: pointer;
-            /* Added to ensure no gaps */
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .gallery-item:hover {
@@ -668,9 +664,6 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
-            /* Ensure no gaps at the bottom */
-            display: block;
-            flex-shrink: 0;
         }
 
         .gallery-item:hover img {
@@ -702,7 +695,6 @@
             color: #ccc;
             line-height: 1.4;
         }
-
 
         /* Project Modal - Optimized for Laptop and Small Screens */
         .project-modal {
@@ -1469,28 +1461,28 @@
                     <h2 class="section-title">My Projects</h2>
                     <div class="gallery">
                         <div class="gallery-item" data-project="1">
-                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Game.png?raw=true" alt="Project 1">
+                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/galaga1.png?raw=true" alt="Project 1">
                             <div class="gallery-overlay">
                                 <h3 class="gallery-title">Food Safety Warrior</h3>
                                 <p class="gallery-desc">A fun browser-based game where you shoot falling germs</p>
                             </div>
                         </div>
                         <div class="gallery-item" data-project="2">
-                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Web%20rev.png?raw=true" alt="Project 2">
+                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/BFS1.png?raw=true" alt="Project 2">
                             <div class="gallery-overlay">
                                 <h3 class="gallery-title">Website Revamp</h3>
                                 <p class="gallery-desc">Complete redesign of a corporate websites</p>
                             </div>
                         </div>
                         <div class="gallery-item" data-project="3">
-                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Verify%20Cert.png?raw=true" alt="Project 3">
+                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Verify1.png?raw=true" alt="Project 3">
                             <div class="gallery-overlay">
                                 <h3 class="gallery-title">Certificate Verification System</h3>
                                 <p class="gallery-desc">Secure system to verify certificates using certificate numbers</p>
                             </div>
                         </div>
                         <div class="gallery-item" data-project="4">
-                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Scheduler.png?raw=true" alt="Project 4">
+                            <img src="https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Schedule1.png?raw=true" alt="Project 4">
                             <div class="gallery-overlay">
                                 <h3 class="gallery-title">Training Scheduler Internal Side</h3>
                                 <p class="gallery-desc">Internal training schedule management system</p>
@@ -1528,7 +1520,14 @@
                     <div class="modal-tech" id="modal-tech">
                         <!-- Technology tags will be inserted here by JavaScript -->
                     </div>
-
+                    <div class="modal-links">
+                        <a href="#" class="modal-link" id="modal-link-live" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="#" class="modal-link" id="modal-link-code" target="_blank">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1720,9 +1719,9 @@
                     subtitle: "Browser-based arcade game",
                     description: "A fun and interactive browser-based game inspired by the classic Galaga arcade game. Players control a spaceship and shoot falling germs while avoiding collisions. Built with HTML5 Canvas and JavaScript for smooth animations and responsive gameplay.",
                     images: [
-                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/newgal2.png?raw=true",
-                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/newgal1.png?raw=true",
-                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/newgal3.png?raw=true"
+                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/galaga1.png?raw=true",
+                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Galaga2.png?raw=true",
+                        "https://github.com/itsmeArozo/itsmeArozo.github.io/blob/main/Galaga3.png?raw=true"
                     ],
                     technologies: ["JavaScript", "HTML", "CSS", "GoDaddy"],
                 },
@@ -1898,9 +1897,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
